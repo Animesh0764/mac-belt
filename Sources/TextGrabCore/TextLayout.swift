@@ -108,6 +108,13 @@ public enum TextLayout {
         }
     }
 
+    /// A one-line taste of what was copied, for the toast: “ANNABELLE MYSTERY 1963 World's…”
+    public static func preview(_ text: String, limit: Int = 48) -> String {
+        let flat = text.split { $0.isWhitespace || $0.isNewline }.joined(separator: " ")
+        guard flat.count > limit else { return flat }
+        return String(flat.prefix(limit - 1)).trimmingCharacters(in: .whitespaces) + "…"
+    }
+
     static func isLink(_ s: String) -> Bool {
         guard let url = URL(string: s), let scheme = url.scheme?.lowercased() else { return false }
         return ["http", "https"].contains(scheme)

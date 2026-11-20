@@ -95,8 +95,13 @@ public final class TextGrabGadget: Gadget {
             let text = TextLayout.text(from: result.lines, keepLineBreaks: s.keepLineBreaks)
             let message = TextLayout.summary(text: text, codes: result.codes)
             let clip = TextLayout.clipboardText(text: text, codes: result.codes)
-            if !clip.isEmpty { copy(clip) }
-            show(message, symbol: clip.isEmpty ? "text.magnifyingglass" : "doc.on.clipboard")
+            if clip.isEmpty {
+                show(message, symbol: "text.magnifyingglass")
+            } else {
+                copy(clip)
+                show("\(message) · press ⌘V to paste\n“\(TextLayout.preview(clip))”", symbol: "doc.on.clipboard",
+                     duration: 3.5)
+            }
         } catch CaptureError.notAllowed {
             askForPermission()
         } catch {
@@ -115,9 +120,9 @@ public final class TextGrabGadget: Gadget {
         }
     }
 
-    private func show(_ message: String, symbol: String) {
+    private func show(_ message: String, symbol: String, duration: TimeInterval = 2.2) {
         lastMessage = message
-        context.toast(message, symbol: symbol)
+        context.toast(message, symbol: symbol, duration: duration)
     }
 
     // MARK: - Settings

@@ -28,7 +28,7 @@ public final class GadgetContext {
         ui.setBadge(symbol, for: id, priority: priority)
     }
 
-    public func toast(_ text: String, symbol: String? = nil) {
-        ui.toast(text, symbol: symbol)
+    public func toast(_ text: String, symbol: String? = nil, duration: TimeInterval = 1.8) {
+        ui.toast(text, symbol: symbol, duration: duration)
     }
 }

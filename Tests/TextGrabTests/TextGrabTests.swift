@@ -53,6 +53,13 @@ final class TextLayoutTests: XCTestCase {
         XCTAssertEqual(TextLayout.clipboardText(text: "", codes: ["a"]), "a")
     }
 
+    func testPreview() {
+        XCTAssertEqual(TextLayout.preview("ANNABELLE\nMYSTERY"), "ANNABELLE MYSTERY")
+        let long = TextLayout.preview(String(repeating: "word ", count: 30))
+        XCTAssertEqual(long.count, 48)
+        XCTAssertTrue(long.hasSuffix("…"))
+    }
+
     func testSettingsDecodeOldFilesWithDefaults() throws {
         let s = try JSONDecoder().decode(TextGrabSettings.self, from: Data(#"{"keepLineBreaks":false}"#.utf8))
         XCTAssertFalse(s.keepLineBreaks)
@@ -165,7 +172,7 @@ final class TextGrabGadgetTests: XCTestCase {
         try g.start()
         await g.grabNow()
         XCTAssertEqual(copied, ["Hello world"])
-        XCTAssertEqual(g.lastMessage, "Copied 2 words")
+        XCTAssertEqual(g.lastMessage, "Copied 2 words · press ⌘V to paste\n“Hello world”")
         g.stop()
     }
 
