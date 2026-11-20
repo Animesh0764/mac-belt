@@ -33,9 +33,15 @@ public final class TextGrabGadget: Gadget {
     private var running = false
 
     // Injected by tests (no screen, no clipboard).
-    var capturer: RegionCapturer = ScreencaptureTool()
+    var capturer: RegionCapturer = FreezeFramePicker()
     var recognizer: TextRecognizer = VisionRecognizer()
     var hasPermission: () -> Bool = { CGPreflightScreenCaptureAccess() }
+    /// Shows the system prompt (first time) or opens System Settings.
+    lazy var openPermission: (_ firstTime: Bool) -> Void = { [weak self] first in
+        guard let self else { return }
+        if first { self.context.permissions.request(.screenRecording) }
+        else { self.context.permissions.openSettings(.screenRecording) }
+    }
     var copy: (String) -> Void = { text in
         let pb = NSPasteboard.general
         pb.clearContents()
@@ -82,15 +88,17 @@ public final class TextGrabGadget: Gadget {
         isGrabbing = true
         defer { isGrabbing = false }
 
-        guard let image = await capturer.capture() else { return }  // Esc: say nothing
         let s = model.settings
         do {
+            guard let image = try await capturer.capture() else { return }  // Esc: say nothing
             let result = try await recognizer.recognize(image, readCodes: s.readCodes)
             let text = TextLayout.text(from: result.lines, keepLineBreaks: s.keepLineBreaks)
             let message = TextLayout.summary(text: text, codes: result.codes)
             let clip = TextLayout.clipboardText(text: text, codes: result.codes)
             if !clip.isEmpty { copy(clip) }
             show(message, symbol: clip.isEmpty ? "text.magnifyingglass" : "doc.on.clipboard")
+        } catch CaptureError.notAllowed {
+            askForPermission()
         } catch {
             show("Couldn't read that: \(error.localizedDescription)", symbol: "exclamationmark.triangle")
         }
@@ -99,10 +107,10 @@ public final class TextGrabGadget: Gadget {
     private func askForPermission() {
         if !askedForPermission {
             askedForPermission = true
-            context.permissions.request(.screenRecording)
+            openPermission(true)
             show("Allow Mac Belt under Screen Recording, then try again", symbol: "lock")
         } else {
-            context.permissions.openSettings(.screenRecording)
+            openPermission(false)
             show("Turn on Mac Belt under Screen Recording. Already on? Quit and reopen Mac Belt.", symbol: "lock")
         }
     }
@@ -181,7 +189,7 @@ struct TextGrabSettingsView: View {
                     if let problem = model.hotkeyProblem {
                         Text(problem).font(.caption).foregroundStyle(.red)
                     } else if let spec = HotkeySpec(model.settings.hotkey) {
-                        Text("Press \(spec.description), then drag a box over the text. Space picks a whole window, Esc cancels.")
+                        Text("Press \(spec.description): the screen freezes, then drag a box over the text. Esc cancels.")
                             .font(.caption).foregroundStyle(.secondary)
                     }
                 }
@@ -193,7 +201,7 @@ struct TextGrabSettingsView: View {
                 Toggle("Read QR codes and barcodes", isOn: $model.settings.readCodes)
             }
             Section {
-                Text("Text is read on your Mac by Apple's built-in text recognition. The screenshot is deleted straight away and nothing is uploaded. macOS needs the Screen Recording permission for Mac Belt to see what's on screen.")
+                Text("Text is read on your Mac by Apple's built-in text recognition. The frozen screenshot is kept in memory only, never saved, and nothing is uploaded. macOS needs the Screen Recording permission for Mac Belt to see what's on screen.")
                     .font(.caption).foregroundStyle(.secondary)
             }
         }

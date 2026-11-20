@@ -106,7 +106,11 @@ final class VisionRecognizerTests: XCTestCase {
 
 private struct FakeCapturer: RegionCapturer {
     var image: CGImage?
-    func capture() async -> CGImage? { image }
+    var denied = false
+    func capture() async throws -> CGImage? {
+        if denied { throw CaptureError.notAllowed }
+        return image
+    }
 }
 
 private struct FakeRecognizer: TextRecognizer {
@@ -203,6 +207,22 @@ final class TextGrabGadgetTests: XCTestCase {
         XCTAssertTrue(g.menuItems().first?.title.hasPrefix("Needs Screen Recording") ?? false)
         g.stop()
         XCTAssertEqual(copied, [])
+    }
+
+    func testDeniedCaptureAsksForPermission() async throws {
+        let g = try makeGadget()
+        g.capturer = FakeCapturer(image: nil, denied: true)
+        var asked: [Bool] = []
+        g.openPermission = { asked.append($0) }
+        try g.start()
+        await g.grabNow()
+        XCTAssertEqual(asked, [true])
+        XCTAssertEqual(g.lastMessage, "Allow Mac Belt under Screen Recording, then try again")
+        await g.grabNow()
+        XCTAssertEqual(asked, [true, false], "second time opens System Settings")
+        XCTAssertTrue(g.lastMessage?.contains("Quit and reopen") ?? false)
+        XCTAssertEqual(copied, [])
+        g.stop()
     }
 
     func testOffMeansOff() async throws {

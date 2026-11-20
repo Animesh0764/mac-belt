@@ -82,13 +82,13 @@ Turn gadgets on or off in **menu ▸ Gadgets…**. Each one's options live in it
 **What it is:** Copies the text out of anything you can see: screenshots, images, videos, PDFs that won't let you select text, error dialogs, someone's shared screen. Draw a box and the text is on your clipboard. It reads QR codes and barcodes too. All of it happens on your Mac using Apple's built-in text recognition, and nothing is uploaded.
 
 **How to use it**
-- Press **⌃⌥T** (or **Grab Text…** in the menu) and drag a box over the text.
-- **Space** picks a whole window, and **Esc** cancels.
+- Press **⌃⌥T** (or **Grab Text…** in the menu). The screen freezes, so text in a playing video stays put. Drag a box over the text.
+- **Esc** cancels.
 - A note confirms what was copied, for example "Copied 42 words" or "Copied link from QR code".
 - **Options ▸ Keep line breaks**: on keeps lines as they look. Off joins each paragraph into one line, which is handy for PDFs and slides.
 - **Options ▸ Read QR codes and barcodes** can be turned off.
 
-**Permissions:** *Screen Recording*, so Mac Belt can see what's inside the box. The screenshot is deleted as soon as the text is read.
+**Permissions:** *Screen Recording*, so Mac Belt can see what's inside the box. The frozen screenshot stays in memory and is never saved.
 
 ## Install
 
@@ -144,7 +144,7 @@ macOS 15.4+ asks before an app reads the clipboard in the background. After the 
 
 - Everything runs on your Mac. Mac Belt makes **no network requests**.
 - Clipboard history stays in `~/Library/Application Support/MacBelt/clipboard.sqlite` (readable only by you). Detected secrets live in memory only.
-- Text Grab reads text on your Mac and deletes its screenshot right away.
+- Text Grab reads text on your Mac; its screenshot is never saved to disk.
 - No analytics, no crash reporting, no account.
 - Settings are plain JSON in `~/Library/Application Support/MacBelt/`. Read them, edit them, delete them.
 - Each gadget asks for a permission only when you switch it on, and the gallery shows which permissions each gadget needs.
