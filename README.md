@@ -2,7 +2,7 @@
 
 **Small Mac tools in one menu bar icon. Free and open source. No paid tier, no tracking, no account.**
 
-Mac Belt is a utility belt for your Mac: a set of small "gadgets" you switch on or off. A gadget that's off uses no CPU and asks for no permissions.
+Mac Belt is a utility belt for your Mac: a set of small "gadgets" you switch on or off from one menu bar icon. A gadget that's off uses no CPU and asks for no permissions.
 
 ```bash
 git clone https://github.com/Animesh0764/mac-belt.git && cd mac-belt && make install
@@ -14,17 +14,81 @@ Needs macOS 14+ and Xcode or the Command Line Tools (`xcode-select --install`).
 
 ## Gadgets
 
-| Gadget | What it does | Instead of | Permissions |
-|---|---|---|---|
-| ☕ **Awake** | Keep your Mac awake for a while, until you say stop, or while an app runs. Optionally only on power, and with or without keeping the screen on. | Amphetamine, Lungo | none |
-| 📋 **Clipboard** | Searchable history (⌃⌘V). **OTPs, API keys and passwords are wiped after 60 s**, from history and the clipboard, and never written to disk. Password-manager copies are never recorded. | Paste (~$30/yr), Maccy | Paste from Other Apps; Accessibility only for "paste directly" |
-| 🎙 **Mic Mute** | One shortcut (⌃⌥M) mutes your mic in every app, with a red "Muted" sign on screen (click it to unmute). Stays muted when you switch to AirPods. | Mic Drop (~$5), MuteMe | none |
-| 📥 **Drop Shelf** | Shake the cursor while dragging files and a shelf pops up. Park files there, drag them out later (one by one or all at once). Also ⌃⌥S. | Dropover (~$5), Yoink (~$9) | none |
-| 🔊 Volume | Per-app volume and output routing. | SoundSource (~$47) | *coming* |
-| 🔤 Text grab | Drag a box, copy the text in it (on-device OCR). | TextSniper (~$8) | *coming* |
-| 🎬 Presentation mode | Hides desktop icons and notifications when you share your screen. | HiddenMe | *coming* |
+| Gadget | In one line | Instead of |
+|---|---|---|
+| ☕ [Awake](#-awake) | Keep your Mac from sleeping, for as long as you want. | Amphetamine, Lungo |
+| 📋 [Clipboard](#-clipboard) | Clipboard history that wipes passwords and OTPs by itself. | Paste, Maccy |
+| 🎙 [Mic Mute](#-mic-mute) | One shortcut mutes your mic in every app. | Mic Drop, MuteMe |
+| 📥 [Drop Shelf](#-drop-shelf) | Shake while dragging files to park them on a shelf. | Dropover, Yoink |
+| 🔤 [Text Grab](#-text-grab) | Copy text from anything on screen, even images and videos. | TextSniper |
 
-A new gadget lands every week or two. Watch the repo to follow along.
+Turn gadgets on or off in **menu ▸ Gadgets…**. Each one's options live in its menu section and in **Settings**.
+
+### ☕ Awake
+
+**What it is:** Stops your Mac from going to sleep while you're downloading, presenting, running a long build, or just reading. When the time's up, your Mac goes back to its normal sleep settings.
+
+**How to use it**
+- **Turn On** keeps the Mac awake until you turn it off.
+- **Keep Awake For** sets a timer: 15 min, 30 min, 1 h, 2 h, 3 h or 8 h. The running one has a tick.
+- **Stay Awake While App Runs** keeps the Mac awake only while an app you pick is open, such as a video call or a game.
+- **Options ▸ Keep the screen on too** stops the display dimming as well. Off means the screen may turn off but the Mac keeps working.
+- **Options ▸ Only when plugged in** never keeps the Mac awake on battery.
+- The menu bar icon shows a ☀️ while Awake is on.
+
+**Permissions:** none.
+
+### 📋 Clipboard
+
+**What it is:** Remembers what you copy so you can paste it again later, and searches it. Unlike other clipboard managers, it spots **OTPs, API keys, passwords and private keys**. It keeps them in memory only, never on disk, and wipes them after 60 seconds from both the history and the clipboard. Copies from password managers (1Password, Bitwarden, Keychain…) are never recorded at all.
+
+**How to use it**
+- Press **⌃⌘V** to open the history. Type to search.
+- **↑ ↓** to pick, **↩** to paste it into the app you're in, **⌥↩** to just copy it, **⌘1–9** for the first nine.
+- **⌘P** pins an item so it's never cleaned up, and **⌘⌫** deletes one.
+- **Pause Saving History** stops recording for a while, for example during a screen share.
+- **Ignored Apps**: tick an app and nothing you copy in it is saved.
+- History keeps 300 items for 30 days by default. Change both in Settings, along with whether images are saved.
+
+**Permissions:** *Paste from Other Apps* (macOS 15.4+; see [setup](#clipboard-one-time-setup)). *Accessibility* only if you want ↩ to paste directly into the app you're in.
+
+### 🎙 Mic Mute
+
+**What it is:** Mutes your microphone itself, not just one app, so it works in Zoom, Meet, Teams, Discord, Slack and the browser at once. A red **Muted** sign stays on screen so you never talk into a muted mic or forget you're live.
+
+**How to use it**
+- Press **⌃⌥M** anywhere to mute or unmute, or use the menu.
+- Click the red sign to unmute. The menu bar icon becomes a crossed-out mic while muted.
+- Switch mics, for example when AirPods connect, and you stay muted.
+- **Options** moves the sign to the top or bottom of the screen, or hides it.
+- Turning the gadget off or quitting Mac Belt always unmutes, so the mic is never left muted with no sign.
+
+**Permissions:** none.
+
+### 📥 Drop Shelf
+
+**What it is:** A floating shelf for files that are in the middle of a move. Drag files from one place, park them on the shelf, go find where they belong, and drag them off again. No more juggling two Finder windows.
+
+**How to use it**
+- Start dragging files and **shake the cursor left-right** a few times. The shelf pops up next to the cursor. Drop the files on it.
+- Or press **⌃⌥S** to show or hide the shelf.
+- Drag files off one at a time, or use **Drag all** to take them all at once.
+- The shelf holds references, not copies. Dragging out to another folder moves the file, like in Finder (hold ⌥ to copy). **✕** empties the shelf and never touches your files.
+
+**Permissions:** none.
+
+### 🔤 Text Grab
+
+**What it is:** Copies the text out of anything you can see: screenshots, images, videos, PDFs that won't let you select text, error dialogs, someone's shared screen. Draw a box and the text is on your clipboard. It reads QR codes and barcodes too. All of it happens on your Mac using Apple's built-in text recognition, and nothing is uploaded.
+
+**How to use it**
+- Press **⌃⌥T** (or **Grab Text…** in the menu) and drag a box over the text.
+- **Space** picks a whole window, and **Esc** cancels.
+- A note confirms what was copied, for example "Copied 42 words" or "Copied link from QR code".
+- **Options ▸ Keep line breaks**: on keeps lines as they look. Off joins each paragraph into one line, which is handy for PDFs and slides.
+- **Options ▸ Read QR codes and barcodes** can be turned off.
+
+**Permissions:** *Screen Recording*, so Mac Belt can see what's inside the box. The screenshot is deleted as soon as the text is read.
 
 ## Install
 
@@ -47,7 +111,16 @@ Then look for the 🔧 icon in your menu bar. To start it at login: **Settings �
 
 ### Homebrew
 
-Coming soon: `brew install Animesh0764/tap/mac-belt` (builds from source too).
+```bash
+brew tap Animesh0764/tap
+brew trust --formula Animesh0764/tap/mac-belt   # Homebrew asks you to trust non-official taps
+brew install mac-belt
+mac-belt                                        # copies it to ~/Applications and opens it
+```
+
+This builds from source on your Mac too. Run `mac-belt` again after each `brew upgrade mac-belt` to refresh the copy in ~/Applications. To remove it: `mac-belt uninstall && brew uninstall mac-belt`.
+
+Homebrew itself officially supports macOS 15 (Sequoia) and newer, and needs up-to-date Command Line Tools to build from source. On macOS 14, use `make install`.
 
 ### Why build from source?
 
@@ -57,7 +130,7 @@ Mac Belt is free, so it isn't signed with a paid Apple Developer ID. Apps you bu
 
 macOS remembers permissions (Accessibility, Screen Recording…) by an app's code signature. A normal home-built app gets a new signature on every build, so macOS would ask again after every update.
 
-`make install` therefore creates a self-signed certificate called **Mac Belt Local** (once, no sudo, no password prompt) and signs your build with it, so permissions survive updates. It's kept in its own small keychain in `~/Library/Application Support/MacBelt/signing/`, not your login keychain, and is only meaningful on your Mac. Skip it with `ADHOC=1 make install`, or remove it any time:
+`make install` and `mac-belt` therefore create a self-signed certificate called **Mac Belt Local** once and sign your build with it, so permissions survive updates. It needs no sudo and no password prompt. It's kept in its own small keychain in `~/Library/Application Support/MacBelt/signing/`, not your login keychain, and is only meaningful on your Mac. Skip it with `ADHOC=1 make install` (or `MACBELT_ADHOC=1 mac-belt`), or remove it any time:
 
 ```bash
 make remove-signing-identity
@@ -71,6 +144,7 @@ macOS 15.4+ asks before an app reads the clipboard in the background. After the 
 
 - Everything runs on your Mac. Mac Belt makes **no network requests**.
 - Clipboard history stays in `~/Library/Application Support/MacBelt/clipboard.sqlite` (readable only by you). Detected secrets live in memory only.
+- Text Grab reads text on your Mac and deletes its screenshot right away.
 - No analytics, no crash reporting, no account.
 - Settings are plain JSON in `~/Library/Application Support/MacBelt/`. Read them, edit them, delete them.
 - Each gadget asks for a permission only when you switch it on, and the gallery shows which permissions each gadget needs.
@@ -87,11 +161,6 @@ Can't pay? Starring the repo, reporting a bug or telling a friend helps just as 
 ## Contributing
 
 Gadgets are small and self-contained, so each one is a good first PR. See [CONTRIBUTING.md](CONTRIBUTING.md) for how to write one.
-
-## More from the same author
-
-- **OTTO**: clap-clap-snap-snap and your Mac opens your workspace and listens for voice commands.
-- **Screenshot Memory**: search your screenshots by what's in them.
 
 ## License
 

@@ -2,6 +2,7 @@ import AwakeGadget
 import ClipboardGadget
 import MicMuteGadget
 import ShelfGadget
+import TextGrabGadget
 import BeltKit
 
 /// Every gadget, in menu order. Adding a gadget = add its target to Package.swift and one line here.
@@ -12,6 +13,7 @@ enum Gadgets {
         ClipboardGadget.self,
         MicMuteGadget.self,
         ShelfGadget.self,
+        TextGrabGadget.self,
     ]
 
     /// Switched on at first launch. Only gadgets that need no permissions.

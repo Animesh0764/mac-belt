@@ -1,0 +1,52 @@
+#!/bin/bash
+# mac-belt: the command Homebrew installs.
+#
+#   mac-belt             install/refresh ~/Applications/MacBelt.app, then open it
+#   mac-belt uninstall   quit Mac Belt and remove ~/Applications/MacBelt.app
+#
+# Homebrew builds Mac Belt inside its own folder. This copies it to ~/Applications
+# (so Spotlight, Launchpad and "Open at login" find it) the first time, and again
+# after each `brew upgrade`. It signs the copy with your own "Mac Belt Local"
+# certificate (see README) so macOS keeps the permissions you granted across
+# upgrades. MACBELT_ADHOC=1 skips that.
+set -euo pipefail
+
+KEG="$(cd "$(dirname "$(realpath "$0")")/.." && pwd)"
+SRC="$KEG/MacBelt.app"
+DEST_DIR="$HOME/Applications"
+DEST="$DEST_DIR/MacBelt.app"
+SUPPORT="$HOME/Library/Application Support/MacBelt"
+STAMP="$SUPPORT/brew-installed-from"
+
+usage() { sed -n '2,6p' "$0" | sed 's/^# \{0,1\}//'; }
+
+quit_app() {
+  osascript -e 'tell application id "io.github.macbelt.app" to quit' >/dev/null 2>&1 || true
+  for _ in 1 2 3 4 5 6 7 8 9 10; do pgrep -x MacBelt >/dev/null || return 0; sleep 0.3; done
+  pkill -x MacBelt >/dev/null 2>&1 || true
+}
+
+case "${1:-}" in
+  "") ;;
+  uninstall)
+    quit_app
+    rm -rf "$DEST" "$STAMP"
+    echo "✓ removed $DEST (settings kept in $SUPPORT)"
+    exit 0 ;;
+  -h|--help|help) usage; exit 0 ;;
+  *) usage >&2; exit 1 ;;
+esac
+
+[[ -d "$SRC" ]] || { echo "mac-belt: $SRC is missing; try: brew reinstall mac-belt" >&2; exit 1; }
+
+if [[ ! -d "$DEST" || "$(cat "$STAMP" 2>/dev/null || true)" != "$KEG" ]]; then
+  [[ "${MACBELT_ADHOC:-0}" == "1" ]] || "$KEG/libexec/signing-identity.sh"
+  quit_app
+  mkdir -p "$DEST_DIR" "$SUPPORT"
+  rm -rf "$DEST"
+  ditto "$SRC" "$DEST"
+  "$KEG/libexec/sign-app.sh" "$DEST"
+  printf '%s\n' "$KEG" > "$STAMP"
+  echo "✓ installed $DEST"
+fi
+open "$DEST"

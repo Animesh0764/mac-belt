@@ -12,12 +12,12 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 APP="build/MacBelt.app"
-BUNDLE_ID="io.github.macbelt.app"
-IDENTITY_NAME="Mac Belt Local"
 
+# SWIFT_BUILD_FLAGS lets Homebrew add --disable-sandbox (its build already runs in a sandbox).
+FLAGS=(${SWIFT_BUILD_FLAGS:-})
 echo "→ swift build -c release"
-swift build -c release --product MacBelt
-BIN="$(swift build -c release --product MacBelt --show-bin-path)/MacBelt"
+swift build -c release --product MacBelt ${FLAGS[@]+"${FLAGS[@]}"}
+BIN="$(swift build -c release --product MacBelt --show-bin-path ${FLAGS[@]+"${FLAGS[@]}"})/MacBelt"
 
 echo "→ assembling $APP"
 rm -rf "$APP"
@@ -26,23 +26,6 @@ cp "$BIN" "$APP/Contents/MacOS/MacBelt"
 cp Resources/Info.plist "$APP/Contents/Info.plist"
 plutil -lint "$APP/Contents/Info.plist" >/dev/null
 
-SIGN_DIR="$HOME/Library/Application Support/MacBelt/signing"
-SIGN_KEYCHAIN="$SIGN_DIR/macbelt-signing.keychain-db"
-SIGN_PASSFILE="$SIGN_DIR/keychain-password"
-HASH=""
-if [[ "${MACBELT_ADHOC:-0}" != "1" && -f "$SIGN_KEYCHAIN" && -f "$SIGN_PASSFILE" ]]; then
-  security unlock-keychain -p "$(cat "$SIGN_PASSFILE")" "$SIGN_KEYCHAIN" 2>/dev/null || true
-  HASH="$(security find-certificate -c "$IDENTITY_NAME" -Z "$SIGN_KEYCHAIN" 2>/dev/null | awk '/SHA-1 hash:/ {print $3; exit}' || true)"
-fi
-
-if [[ -n "$HASH" ]]; then
-  echo "→ codesign with \"$IDENTITY_NAME\" (stable: permissions survive updates)"
-  codesign --force --keychain "$SIGN_KEYCHAIN" --sign "$HASH" --identifier "$BUNDLE_ID" "$APP"
-else
-  echo "→ codesign ad-hoc (permissions may be asked again after each rebuild;"
-  echo "  run 'make signing-identity' once to avoid that)"
-  codesign --force --sign - --identifier "$BUNDLE_ID" "$APP"
-fi
-codesign --verify --strict "$APP"
+scripts/sign-app.sh "$APP"
 
 echo "✓ built $(pwd)/$APP"

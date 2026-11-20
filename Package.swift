@@ -33,9 +33,14 @@ let package = Package(
         .target(name: "ShelfCore"),
         .target(name: "ShelfGadget", dependencies: ["BeltKit", "ShelfCore"], path: "Sources/Gadgets/Shelf"),
 
+        // ── Text grab ─────────────────────────────────────────────────────────
+        // Turning OCR lines into pasteable text. No AppKit, no Vision.
+        .target(name: "TextGrabCore"),
+        .target(name: "TextGrabGadget", dependencies: ["BeltKit", "TextGrabCore"], path: "Sources/Gadgets/TextGrab"),
+
         // The menu bar app: status item, gallery, settings, support window.
         .executableTarget(name: "MacBeltApp",
-                          dependencies: ["BeltKit", "AwakeGadget", "ClipboardGadget", "MicMuteGadget", "ShelfGadget"]),
+                          dependencies: ["BeltKit", "AwakeGadget", "ClipboardGadget", "MicMuteGadget", "ShelfGadget", "TextGrabGadget"]),
 
         .testTarget(name: "BeltKitTests", dependencies: ["BeltKit"]),
         .testTarget(name: "AwakeCoreTests", dependencies: ["AwakeCore"]),
@@ -44,5 +49,6 @@ let package = Package(
         .testTarget(name: "ClipboardGadgetTests", dependencies: ["ClipboardGadget", "ClipboardCore", "BeltKit"]),
         .testTarget(name: "MicMuteTests", dependencies: ["MicMuteGadget", "MicMuteCore", "BeltKit"]),
         .testTarget(name: "ShelfTests", dependencies: ["ShelfGadget", "ShelfCore", "BeltKit"]),
+        .testTarget(name: "TextGrabTests", dependencies: ["TextGrabGadget", "TextGrabCore", "BeltKit"]),
     ]
 )
