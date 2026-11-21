@@ -1,6 +1,10 @@
-# 🧰 Mac Belt
+<p align="center"><img src="docs/icon.png" width="128" alt="Mac Belt icon"></p>
+
+# Mac Belt
 
 **Small Mac tools in one menu bar icon. Free and open source. No paid tier, no tracking, no account.**
+
+🌐 [animesh0764.github.io/mac-belt](https://animesh0764.github.io/mac-belt/)
 
 Mac Belt is a utility belt for your Mac: a set of small "gadgets" you switch on or off from one menu bar icon. A gadget that's off uses no CPU and asks for no permissions.
 

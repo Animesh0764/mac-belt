@@ -8,6 +8,8 @@
 	<string>Mac Belt</string>
 	<key>CFBundleExecutable</key>
 	<string>MacBelt</string>
+	<key>CFBundleIconFile</key>
+	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
 	<string>io.github.macbelt.app</string>
 	<key>CFBundleInfoDictionaryVersion</key>

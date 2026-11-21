@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mac Belt</title>
+<meta name="description" content="Small Mac tools in one menu bar icon. Keep awake, clipboard history, mic mute, drop shelf and text grab. Free and open source, no tracking.">
+<meta property="og:title" content="Mac Belt">
+<meta property="og:description" content="Small Mac tools in one menu bar icon. Free and open source. No paid tier, no tracking, no account.">
+<meta property="og:image" content="https://animesh0764.github.io/mac-belt/icon.png">
+<link rel="icon" href="icon.png">
+<style>
+  :root {
+    --bg: #fffaf4; --card: #ffffff; --text: #2a1a10; --muted: #7a6455; --line: #f0e1d2;
+    --accent: #e8622f; --accent-soft: #fff0e4; --code: #2a1a10; --code-text: #fbe9d6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #17110d; --card: #211812; --text: #f6ebe0; --muted: #b59d8b; --line: #33261d;
+            --accent: #ff8a4c; --accent-soft: #2c1d14; --code: #0e0a08; --code-text: #fbe9d6; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 17px/1.6 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif; }
+  main { max-width: 920px; margin: 0 auto; padding: 0 16px 64px; }
+  a { color: var(--accent); }
+  header { text-align: center; padding: 64px 0 32px; }
+  header img { width: 148px; height: 148px; }
+  h1 { font-size: 52px; line-height: 1.1; margin: 12px 0 8px; letter-spacing: -0.02em; }
+  .tag { font-size: 21px; color: var(--muted); margin: 0 auto; max-width: 600px; }
+  .pills { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 20px 0 0; padding: 0; list-style: none; }
+  .pills li { background: var(--accent-soft); color: var(--accent); border-radius: 999px; padding: 4px 14px; font-size: 14px; font-weight: 600; }
+  h2 { font-size: 28px; margin: 56px 0 16px; letter-spacing: -0.01em; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 20px 22px; }
+  .card h3 { margin: 0 0 4px; font-size: 19px; }
+  .card .emoji { font-size: 28px; }
+  .card p { margin: 6px 0 0; color: var(--muted); font-size: 15.5px; }
+  .card .key { display: inline-block; margin-top: 10px; font-size: 13px; color: var(--muted); }
+  kbd { font: 600 13px/1 ui-monospace, "SF Mono", Menlo, monospace; background: var(--accent-soft); color: var(--text);
+        border: 1px solid var(--line); border-radius: 6px; padding: 3px 6px; }
+  .install { display: grid; gap: 16px; }
+  .cmd { position: relative; background: var(--code); color: var(--code-text); border-radius: 14px; padding: 18px 20px; }
+  .cmd .label { font-size: 13px; color: #c6a890; margin-bottom: 6px; font-weight: 600; }
+  .cmd pre { margin: 0; overflow-x: auto; font: 14.5px/1.6 ui-monospace, "SF Mono", Menlo, monospace; }
+  .cmd button { position: absolute; top: 12px; right: 12px; border: 0; border-radius: 8px; padding: 5px 10px;
+                background: #3a2a20; color: #fbe9d6; font: 600 12px -apple-system, sans-serif; cursor: pointer; }
+  .cmd button:hover { background: #4b382b; }
+  .note { color: var(--muted); font-size: 15px; }
+  ul.plain { padding-left: 20px; }
+  ul.plain li { margin: 6px 0; }
+  footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; text-align: center; }
+  @media (max-width: 560px) { h1 { font-size: 40px; } .tag { font-size: 18px; } header { padding-top: 40px; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="icon.png" alt="Mac Belt icon: a leather belt with a buckle">
+    <h1>Mac Belt</h1>
+    <p class="tag">Small Mac tools in one menu bar icon. Switch on only the ones you need.</p>
+    <ul class="pills"><li>Free forever</li><li>Open source (MIT)</li><li>No tracking</li><li>No account</li></ul>
+  </header>
+
+  <h2>Gadgets</h2>
+  <div class="grid">
+    <div class="card"><div class="emoji">☕</div><h3>Awake</h3>
+      <p>Keep your Mac from sleeping for 15 minutes, 8 hours, forever, or while an app is open.</p>
+      <span class="key">Instead of Amphetamine, Lungo</span></div>
+    <div class="card"><div class="emoji">📋</div><h3>Clipboard</h3>
+      <p>Searchable clipboard history that spots OTPs, passwords and API keys, keeps them off disk and wipes them after a minute.</p>
+      <span class="key"><kbd>⌃⌘V</kbd> · instead of Paste, Maccy</span></div>
+    <div class="card"><div class="emoji">🎙</div><h3>Mic Mute</h3>
+      <p>Mutes the microphone itself, so it works in Zoom, Meet, Teams, Discord and the browser at once. A red sign shows while muted.</p>
+      <span class="key"><kbd>⌃⌥M</kbd> · instead of Mic Drop, MuteMe</span></div>
+    <div class="card"><div class="emoji">📥</div><h3>Drop Shelf</h3>
+      <p>Shake the cursor while dragging files to park them on a floating shelf, then drag them off where they belong.</p>
+      <span class="key"><kbd>⌃⌥S</kbd> · instead of Dropover, Yoink</span></div>
+    <div class="card"><div class="emoji">🔤</div><h3>Text Grab</h3>
+      <p>Drag a box over any text on screen, even in images, videos or PDFs, and it's copied. Reads QR codes too. All on your Mac.</p>
+      <span class="key"><kbd>⌃⌥T</kbd> · instead of TextSniper</span></div>
+  </div>
+  <p class="note">A gadget that's off uses no CPU and asks for no permissions.</p>
+
+  <h2>Install</h2>
+  <div class="install">
+    <div class="cmd"><div class="label">From source</div>
+      <button type="button" data-copy="git clone https://github.com/Animesh0764/mac-belt.git && cd mac-belt && make install">Copy</button>
+      <pre>git clone https://github.com/Animesh0764/mac-belt.git
+cd mac-belt && make install</pre></div>
+    <div class="cmd"><div class="label">Homebrew (macOS 15+)</div>
+      <button type="button" data-copy="brew tap Animesh0764/tap && brew trust --formula Animesh0764/tap/mac-belt && brew install mac-belt && mac-belt">Copy</button>
+      <pre>brew tap Animesh0764/tap
+brew trust --formula Animesh0764/tap/mac-belt
+brew install mac-belt
+mac-belt</pre></div>
+  </div>
+  <p class="note">Needs macOS 14 or newer and Xcode or the Command Line Tools (<code>xcode-select --install</code>). Mac Belt is built on your Mac, so Gatekeeper doesn't block it and you can read every line first. See the <a href="https://github.com/Animesh0764/mac-belt#install">README</a> for details.</p>
+
+  <h2>Private by design</h2>
+  <ul class="plain">
+    <li>Mac Belt makes <strong>no network requests</strong>. Everything runs on your Mac.</li>
+    <li>No analytics, no crash reporting, no account.</li>
+    <li>Detected secrets on the clipboard live in memory only. Text Grab's screenshot is never saved.</li>
+    <li>Settings are plain JSON files you can read, edit or delete.</li>
+  </ul>
+
+  <h2>Support</h2>
+  <p>Mac Belt is free and always will be. If it saved you from buying an app, consider buying me a coffee (or chai) through <a href="https://github.com/sponsors/Animesh0764">GitHub Sponsors</a>, or UPI to <code>singh.animesh.1@superyes</code>. Starring the repo or telling a friend helps just as much.</p>
+
+  <footer>
+    <a href="https://github.com/Animesh0764/mac-belt">Source on GitHub</a> · MIT License · Not affiliated with Apple
+  </footer>
+</main>
+<script>
+  for (const b of document.querySelectorAll("button[data-copy]")) {
+    b.addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = "Copied"; }
+      catch { b.textContent = "Select and copy"; }
+      setTimeout(() => (b.textContent = "Copy"), 1600);
+    });
+  }
+</script>
+</body>
+</html>
